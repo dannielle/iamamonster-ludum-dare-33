@@ -5,6 +5,8 @@ public class PlayerScript : MonoBehaviour {
 
 	private Vector2 movement;
 
+	Animator anim;
+
 	enum State {
 		Climbing,
 		Adventuring
@@ -14,6 +16,7 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start () {
 		state = State.Adventuring;
+		anim = GetComponent<Animator> ();
 	}
 	
 	void Update () {
@@ -24,11 +27,11 @@ public class PlayerScript : MonoBehaviour {
 		switch (state) {
 		case State.Climbing:
 			GetComponent<Rigidbody2D>().gravityScale = 0;
-
+			anim.SetBool("isClimbing", true);
 			break;
 		case State.Adventuring:
 			GetComponent<Rigidbody2D>().gravityScale = 15;
-
+			anim.SetBool("isClimbing", false);
 			break;
 		default:
 			break;
