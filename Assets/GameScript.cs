@@ -16,4 +16,8 @@ public class GameScript : MonoBehaviour {
 	public void win(){
 		print ("win");
 	}
+
+	public void restart() {
+		Application.LoadLevel (Application.loadedLevelName);
+	}
 }
