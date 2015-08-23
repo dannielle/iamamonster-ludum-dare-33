@@ -3,9 +3,14 @@ using System.Collections;
 
 public class CameraScript : MonoBehaviour {
 
+	private Camera camera;
 	public float dampTime = 0.15f;
 	private Vector3 velocity = Vector3.zero;
 	public Transform target;
+
+	void Start () {
+		camera = GetComponent<Camera>();
+	}
 	
 	// Update is called once per frame
 	void Update () 
