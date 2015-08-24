@@ -6,16 +6,35 @@ public class StabbingScript : MonoBehaviour {
 	int stabCount;
 	GameObject player;
 	Animator playeranim;
+	bool overSigil;
+
+	public AudioClip stabbingSound;
+	AudioSource source;
 
 	void Start () {
 		stabCount = 0;
 		player = GameObject.Find ("player");
 		playeranim = (Animator)player.GetComponent<Animator> ();
-		playeranim.SetBool ("isOverSigil", false);
+		setOverSigil (false);
+
+		source = GetComponent<AudioSource> ();
 	}
 	
 	void Update () {
-		if (stabCount >= 10) {
+		if (overSigil) {
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				print ("stabbing");
+				playeranim.SetBool ("isStabbing", true);
+				stabCount++;
+				source.PlayOneShot(stabbingSound);
+			}
+		}
+
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			playeranim.SetBool ("isStabbing", false);
+		}
+
+		if (stabCount >= 5) {
 			GameObject gm = GameObject.Find ("GameManager");
 			((GameScript) gm.GetComponent(typeof(GameScript))).win();
 		}
@@ -23,22 +42,21 @@ public class StabbingScript : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.gameObject.name == "player") {
-			playeranim.SetBool ("isOverSigil", true);
+			setOverSigil(true);
 		}
 	}
 
 	void OnTriggerStay2D(){
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			playeranim.SetBool ("isStabbing", true);
-			stabCount++;
-		} else {
-			playeranim.SetBool("isStabbing", false);
-		}
 	}
 
 	void OnTriggerExit2D(Collider2D other){
 		if (other.gameObject.name == "player") {
-			playeranim.SetBool ("isOverSigil", false);
+			setOverSigil(false);
 		}
+	}
+
+	void setOverSigil(bool isover){
+		playeranim.SetBool ("isOverSigil", isover);
+		overSigil = isover;
 	}
 }
